@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">mapper</string>
+     <string name="app_file">Buscar Archivo sdcard</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+    
 </resources>
