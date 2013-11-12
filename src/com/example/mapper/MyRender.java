@@ -9,19 +9,15 @@ import android.opengl.GLSurfaceView.Renderer;
  
 public class MyRender implements Renderer{
  
-//   Triangle triangle;     // ( NEW )
-  // Square quad;           // ( NEW )
-   
    // Constructor
    public MyRender(Context context) {
-//      triangle = new Triangle();   // ( NEW )
-     
+	   
    }
 
 
    @Override
    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-    
+	   
    }
    
    @Override
@@ -32,9 +28,7 @@ public class MyRender implements Renderer{
 
    public void onDrawFrame(GL10 gl) {
       GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-//      triangle.draw(gl);
-     
-                     
+      
    }
 }
  
