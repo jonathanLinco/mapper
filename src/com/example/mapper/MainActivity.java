@@ -1,40 +1,59 @@
 package com.example.mapper;
 
-import fileChose.ListFileActivity;
+import java.util.ArrayList;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
+import java.util.List;
+
+import depth.DepthListener;
+import file.DXF;
+import file.FileListener;
+import geometry.Point2D;
+import geometry.Point3D;
+import geometry.Polygon;
+import geometry.Polyline;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-//import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-//import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends Activity {
 
-	Button abrir;
-	TextView textView;
-	ToggleButton poligono;
-	GLSurfaceView glView;
+	public ToggleButton poligono, traslate, rotate, zoom;
+	public Button openFile, depthButton;
+	public TextView log;
+	public GLSurfaceView glView;
+	public MyRender renderer;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		abrir = (Button) this.findViewById(R.id.botonAbrir);
-		poligono = (ToggleButton) this.findViewById(R.id.poligono);
-		textView = (TextView) this.findViewById(R.id.textView);
-		textView.setText("Toca y arrastra");
-		glView = new SurfaceView(this);
-		glView.setRenderer(new MyRender(this));
-		abrir.setOnClickListener(this);
+		this.log = (TextView) this.findViewById(R.id.textView);
+		this.zoom = (ToggleButton) this.findViewById(R.id.zoom);
+		this.rotate = (ToggleButton) this.findViewById(R.id.rotar);
+		this.poligono = (ToggleButton) this.findViewById(R.id.poligono);
+		this.traslate = (ToggleButton) this.findViewById(R.id.mover);
+		this.openFile = (Button) this.findViewById(R.id.botonAbrir);
+		this.depthButton = (Button) this.findViewById(R.id.levelButton);
+
 		LinearLayout layout = (LinearLayout) findViewById(R.id.ll);
+
+		this.renderer = new MyRender(this);
+		this.glView = new SurfaceView(this);
+		this.renderer.main = this;
+
+		this.depthButton.setOnClickListener(new DepthListener(this));
+		this.openFile.setOnClickListener(new FileListener(this));
+		this.glView.setRenderer(this.renderer);
+
 		layout.addView(glView);
 
 	}
@@ -51,24 +70,17 @@ public class MainActivity extends Activity implements OnClickListener{
 		glView.onResume();
 	}
 
-
-	@Override
-	public void onClick(View arg0) {
-		int idView = arg0.getId();
-		if (idView == findViewById(R.id.botonAbrir).getId()) {
-			Toast.makeText(this, "click boton abrir", Toast.LENGTH_LONG).show();
-			Intent i = new Intent(this, ListFileActivity.class);
-			startActivityForResult(i, 0);
-		}
-	}
-
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == 1) {
 			String result = data.getStringExtra("result");
-			// result nombre del archivo
-			Toast.makeText(this, "url: " + result, Toast.LENGTH_LONG).show();
+			for (Polyline i : DXF.getPolylines(result)) {
+				this.renderer.polylines.add(i);
+			}
+
+			this.renderer.updateScale3D();
+			this.glView.onResume();
+			this.log.setText(String.valueOf(this.renderer.scale3d.minx));
 		}
 	}
-
 }

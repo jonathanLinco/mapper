@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
     <LinearLayout
@@ -11,29 +10,89 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal" >
+        android:background="@drawable/degradado"
+        android:orientation="horizontal" 
+        >
    
         <Button
         android:id="@+id/botonAbrir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
         android:layout_alignParentTop="true"
-        android:text="abrir" />
-	
+        android:background="@drawable/abrircar"
+        android:minHeight="20dp"
+        android:minWidth="20dp"
+        
+ 
+        />
+       
         <ToggleButton
             android:id="@+id/poligono"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_margin="3dp"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
             android:text="poligono"
-            android:textOff="PNTAR POLIGONO"
-            android:textOn="TERMINAR" />
-
-        <TextView
-            android:id="@+id/textView"
+            android:background="@drawable/poligono"
+            android:textOff=""
+            android:textOn=""  />
+        
+         <ToggleButton
+            android:id="@+id/zoom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:layout_alignParentTop="true"
+            android:layout_margin="3dp"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:text="poligono"
+            android:background="@drawable/zoom"
+            android:textOff=""
+            android:textOn=""  />
+         
+            <ToggleButton
+            android:id="@+id/rotar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="3dp"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:text="poligono"
+            android:background="@drawable/rotar"
+            android:textOff=""
+            android:textOn=""  />
+         
+         <ToggleButton
+            android:id="@+id/mover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="3dp"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:text="poligono"
+            android:background="@drawable/mover"
+            android:textOff=""
+            android:textOn=""  />
+         
+        
+       <Button
+        android:id="@+id/levelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+      	android:layout_margin="3dp"
+        android:layout_alignParentTop="true"
+        android:minHeight="20dp"
+        android:minWidth="20dp"
+        android:background="@drawable/nivel"
+    	 />
+        
+
+ 
  
    </LinearLayout>
     
@@ -45,5 +104,21 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
     </LinearLayout>
+            <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@+id/ll"
+            android:text="TextView" />
+
+            <Spinner
+                android:id="@+id/wea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll"
+                android:layout_marginLeft="48dp"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@+id/textView" />
 
 </RelativeLayout>

@@ -1,68 +1,61 @@
 package com.example.mapper;
 
+import geometry.Point2D;
+import geometry.Polygon;
+import rotate.Rotate;
+import traslate.Traslate;
+import zoom.Zoom;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnTouchListener;
 
 public class SurfaceView extends GLSurfaceView implements OnTouchListener {
 
-	private int MAX_ZOOM = 20;
-	
-	private Point midPoint;
-	private Point p1, p2;
-	
-//	private float[] x = new float[2];
-//	private float[] y = new float[2];
-//	private float[] ptoMedio = new float[2];
-	private double camera = 100, distanciaAnterior = 0;
 	private MainActivity mainActivity;
-	private StringBuilder builder = new StringBuilder();
+	private Traslate traslate;
+	private Rotate rotate;
+	private Zoom zoom;
+	private Polygon poligono;
 
 	public SurfaceView(Context context) {
 		super(context);
-
 		this.mainActivity = (MainActivity) context;
+		this.traslate = new Traslate(this.mainActivity);
+		this.rotate = new Rotate(this.mainActivity);
+		this.zoom = new Zoom(this.mainActivity);
 		this.setOnTouchListener((OnTouchListener) this);
 	}
 
+	
 	public boolean onTouch(View view, MotionEvent event) {
-//		int pointerCount = ;
-		if (this.mainActivity.poligono.isChecked()) {
-			this.mainActivity.textView.setText("poligono x:" + event.getX() + " y:" + event.getY());
-		} else {
-			if (event.getPointerCount() == 2) {
-				p1 = new Point(event.getX(0), event.getY(0));
-				p2 = new Point(event.getX(1), event.getY(1));
-				
-				
-//				for (int pointerIndex = 0; pointerIndex < 2; pointerIndex++) {
-//					x[pointerIndex] = (int) event.getX(pointerIndex);
-//					y[pointerIndex] = (int) event.getY(pointerIndex);
-//				}
-				updateTextView();
 
-			}
+		
+		float x = event.getX(), y = event.getY();
+		float posX =((2*x / (float)this.mainActivity.renderer.ancho) ) - 1;
+		float posY = ((2 *y/ (float)this.mainActivity.renderer.largo)) - 1;
+		
+			
+		String coordenadas="coordenadas pantalla------> x: "+x+"  y: "+y+"\n"+
+		"coordenadas OpenGl--------> x: "+posX+"  y: +"+posY;
+		this.mainActivity.log.setText(coordenadas);
+		
+		
+		if (this.mainActivity.poligono.isChecked() && event.getAction()==MotionEvent.ACTION_UP) {
+			poligono.addPoint(new Point2D(posX,posY));  /*<----------se agrega el punto al poligono*/
+			this.mainActivity.glView.onResume();
+			
+		} else if (this.mainActivity.traslate.isChecked()) {
+			this.traslate.event(event);
+		} else if (this.mainActivity.zoom.isChecked()) {
+			this.zoom.event(event);
+		} else if (this.mainActivity.rotate.isChecked()) {
+			this.rotate.event(event);
 		}
 		return true;
 	}
 
-	protected void updateTextView() {
-		builder.setLength(0);
-		float distancia = p1.distanceEuclidean(p2);
-		float dist = (float) (distanciaAnterior - distancia);
-		dist = dist < -MAX_ZOOM ? -MAX_ZOOM : dist > MAX_ZOOM ? MAX_ZOOM : dist;
-
-		camera += dist / 5;
-		camera = camera < 0 ? 0 : camera > 100 ? 100 : camera;
-
-		midPoint = p1.middlePoint(p2);
-//		ptoMedio[0] = ;
-//		ptoMedio[1] = ;
-		builder.append("Camera = " + camera + "\n");
-		builder.append("Pto Medio = " + midPoint.x + " x " + midPoint.y);
-		distanciaAnterior = distancia;
-		this.mainActivity.textView.setText(builder.toString());
-	}
 }

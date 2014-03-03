@@ -22,8 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="fileChose.ListFileActivity"
+        <activity android:name="file.ListFileActivity"
             android:label="@string/app_file"></activity>
+        <activity android:name="file.ListOptionFileActivity"></activity>
     </application>
 
 </manifest>
